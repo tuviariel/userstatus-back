@@ -9,14 +9,18 @@ router.post("/", (req, res, next) => {
         password: req.body.password,
         status: "Working"
     })
-    userInfo.save().then((res)=>{
-        console.log(res)
+    userInfo.save().then((response)=>{
+        res.status(200).json({
+            message:"it works!",
+            user: userInfo,
+            res: response
+        })
     }).catch((err)=>{
-        console.log(err)
-    })
-    res.status(200).json({
-        message:"it works!",
-        user: userInfo
+        res.status(500).json({
+            message:"something went wrong!",
+            user: userInfo,
+            err: err
+        })
     })
 });
 
