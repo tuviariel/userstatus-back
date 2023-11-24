@@ -2,26 +2,27 @@ const express = require("express");
 const router = express.Router();
 const UserInfo = require("../models/userInfo");
 const mongoose = require("mongoose");
-router.post("/", (req, res, next) => {
-    const userInfo = new UserInfo({
-        _id: new mongoose.Types.ObjectId,
-        userName: req.body.userName,
-        password: req.body.password,
-        status: "Working"
-    })
-    userInfo.save().then((response)=>{
-        res.status(200).json({
-            message:"it works!",
-            user: userInfo,
-            res: response
-        })
-    }).catch((err)=>{
+router.post("/", async (req, res, next) => {
+    try { 
+        const response = await UserInfo.findOne({ userName: req.body.userName } && { password: req.body.password }).exec();
+            console.log(response);
+            if(response){
+                res.status(200).json({
+                    message:"user found!",
+                })
+            } else {
+                res.status(202).json({
+                    message:"no user with that user name and/or password...",
+                })
+            }
+    } catch (err) {
         res.status(500).json({
             message:"something went wrong!",
-            user: userInfo,
             err: err
         })
-    })
+    } //finally {
+
+    //}
 });
 
 module.exports = router;

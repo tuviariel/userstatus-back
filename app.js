@@ -3,9 +3,10 @@ const app = express();
 const morgan = require("morgan");
 const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
-const loginRoutes = require("./api/routes/login");
+const loginRoute = require("./api/routes/login");
+const registerRoute = require("./api/routes/register");
 
-mongoose.connect("mongodb+srv://tuviaa109:Tuviariel12@cluster0.gdsj68n.mongodb.net/?retryWrites=true&w=majority")
+mongoose.connect("mongodb+srv://" + process.env.MONGO_ATLAS_UN + ":" + process.env.MONGO_ATLAS_PW + "@cluster0.gdsj68n.mongodb.net/?retryWrites=true&w=majority")
 
 app.use(morgan("dev"));
 app.use(bodyParser.urlencoded({extended: false}));
@@ -20,7 +21,8 @@ app.use((req, res, next) => {
     next();
 })
 
-app.use("/login", loginRoutes)
+app.use("/login", loginRoute)
+app.use("/register", registerRoute)
 
 //error handling:
 app.use((req, res, next) => {
