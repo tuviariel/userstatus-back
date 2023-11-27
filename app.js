@@ -1,10 +1,35 @@
 const express = require("express");
-const app = express();
+const session = require('express-session');
 const morgan = require("morgan");
 const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
 const loginRoute = require("./api/routes/login");
 const registerRoute = require("./api/routes/register");
+const RedisStore = require("connect-redis").default;
+const Redis = require('redis');
+const app = express();
+
+const redisClient = Redis.createClient({
+    password: process.env.REDIS_CLIENT_PW,
+    socket: {
+        host: 'redis-16001.c322.us-east-1-2.ec2.cloud.redislabs.com',
+        port: 16001
+    }
+});
+redisClient.connect();
+redisClient.on('error', err => console.log('Redis Client Error:', err));
+redisClient.on('connect', () => console.log('Connected to redis successfully'));
+
+const redisStore = new RedisStore({ client: redisClient });
+app.use(
+    session({
+      store: redisStore,
+      secret: 'your-secret-key',
+      resave: false,
+      saveUninitialized: true,
+      cookie: { secure: false, httpOnly: false, expires:3600 },
+    })
+  );
 
 mongoose.connect("mongodb+srv://" + process.env.MONGO_ATLAS_UN + ":" + process.env.MONGO_ATLAS_PW + "@cluster0.gdsj68n.mongodb.net/?retryWrites=true&w=majority")
 

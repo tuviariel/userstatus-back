@@ -1,6 +1,7 @@
 {
     "env": {
         "MONGO_ATLAS_PW":"Tuviariel12",
-        "MONGO_ATLAS_UN":"tuviaa109"
+        "MONGO_ATLAS_UN":"tuviaa109",
+        "REDIS_CLIENT_PW":"gFUPipdcCbKwBqDpLR0fbPuLMLOXl4Kz"
     }
 }
