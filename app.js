@@ -5,22 +5,10 @@ const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
 const loginRoute = require("./api/routes/login");
 const registerRoute = require("./api/routes/register");
-const RedisStore = require("connect-redis").default;
-const Redis = require('redis');
+const authCheckRoute = require("./api/routes/authCheck")
+const redisStore = require("./api/services/redisStore")
 const app = express();
 
-const redisClient = Redis.createClient({
-    password: process.env.REDIS_CLIENT_PW,
-    socket: {
-        host: 'redis-16001.c322.us-east-1-2.ec2.cloud.redislabs.com',
-        port: 16001
-    }
-});
-redisClient.connect();
-redisClient.on('error', err => console.log('Redis Client Error:', err));
-redisClient.on('connect', () => console.log('Connected to redis successfully'));
-
-const redisStore = new RedisStore({ client: redisClient });
 app.use(
     session({
       store: redisStore,
@@ -48,6 +36,7 @@ app.use((req, res, next) => {
 
 app.use("/login", loginRoute)
 app.use("/register", registerRoute)
+app.use("/isAuth", authCheckRoute)
 
 //error handling:
 app.use((req, res, next) => {
@@ -58,7 +47,7 @@ app.use((req, res, next) => {
 app.use((error, req, res, next) => {
     res.status(error.status || 500).json({
         error: {
-            message: error.message
+            message: error.message+"am here..."
         }
     });
 })
