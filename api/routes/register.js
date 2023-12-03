@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 const UserInfo = require("../models/userInfo");
 const mongoose = require("mongoose");
+
 router.post("/", async (req, res, next) => {
     const userInfo = new UserInfo({
         _id: new mongoose.Types.ObjectId,
@@ -12,6 +13,8 @@ router.post("/", async (req, res, next) => {
     try { 
         const response = await userInfo.save();
         if(response) {
+            req.session.user = {userName: req.body.userName};
+            req.session.save();
             res.status(200).json({
                 message:"it works!",
                 user: userInfo,
@@ -29,7 +32,6 @@ router.post("/", async (req, res, next) => {
             err: err
         })
     } //finally {
-
     //}
 });
 
