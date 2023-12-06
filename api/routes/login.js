@@ -11,6 +11,7 @@ router.post("/", async (req, res, next) => {
             req.session.save();
             res.status(200).json({
                 message:"user found!",
+                user:response
             })
         } else {
             res.status(202).json({

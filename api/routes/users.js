@@ -6,8 +6,8 @@ const mongoose = require("mongoose");
 router.get("/", async (req, res, next) => {
     const page = req.query.page || 1;
     const limit = req.query.limit || 50;
-    console.log((page-1)*limit);
-    console.log(limit);
+    // console.log((page-1)*limit);
+    // console.log(limit);
     try { 
         const response = await UserInfo.find().select("_id userName status ts").skip((page-1)*limit).limit(limit);
         if(response){

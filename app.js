@@ -3,13 +3,14 @@ const session = require('express-session');
 const morgan = require("morgan");
 const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
-const UserInfo = require("./api/models/userInfo");
+// const UserInfo = require("./api/models/userInfo");
 
 const loginRoute = require("./api/routes/login");
 const logoutRoute = require("./api/routes/logout");
 const registerRoute = require("./api/routes/register");
 const authCheckRoute = require("./api/routes/authCheck");
 const usersRoute = require("./api/routes/users");
+const statusRoute = require("./api/routes/status");
 
 //Redis Session Set-up:
 const RedisStore = require("connect-redis").default;
@@ -41,15 +42,15 @@ mongoose.connect("mongodb+srv://" + process.env.MONGO_ATLAS_UN + ":" + process.e
 //   console.log('Connected to the database');
 
 //   try {
-    // Generate and insert 20000 documents:
-    // const documents = Array.from({ length: 20000 }, (_, index) => ({ 
-    //     userName: `user${index}`,
-    //     password: `password${index}`,
-    //     status: Math.random() > 0.5 ? 'Working' : 'Vacation',
-    // }));
-    // await UserInfo.insertMany(documents);
+//     // Generate and insert 20000 documents:
+//     // const documents = Array.from({ length: 20000 }, (_, index) => ({ 
+//     //     userName: `user${index}`,
+//     //     password: `password${index}`,
+//     //     status: Math.random() > 0.5 ? 'Working' : 'Vacation',
+//     // }));
+//     // await UserInfo.insertMany(documents);
 
-    // update all documents:
+//     // update all documents:
 //     await UserInfo.updateMany({}, {$set: { ts: Date.now()}});
 
 //     console.log('Documents inserted successfully');
@@ -93,6 +94,7 @@ app.use("/login", loginRoute)
 app.use("/register", registerRoute)
 app.use("/isAuth", authCheckRoute)
 app.use("/users", usersRoute)
+app.use("/status", statusRoute)
 
 //error handling:
 app.use((req, res, next) => {
