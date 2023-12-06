@@ -8,7 +8,8 @@ router.post("/", async (req, res, next) => {
         _id: new mongoose.Types.ObjectId,
         userName: req.body.userName,
         password: req.body.password,
-        status: "Working"
+        status: "Working",
+        ts: Date.now()
     })
     try { 
         const response = await userInfo.save();
