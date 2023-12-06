@@ -14,9 +14,24 @@ const isAuthenticated = (req, res, next) => {
     }
 }
 router.post("/", isAuthenticated, (req, res, next) => {
-    res.status(200).json({
-        message:"user authorized!"
-    })
+    try {
+        if(req.session){
+            res.status(200).json({
+                message:"user authorized!"
+            })
+        } else {
+            res.status(401).json({
+                message:"Unauthorized!"
+            })
+        }
+    } catch (err) {
+        res.status(500).json({
+            message:"something went wrong!",
+            err: err
+        })
+    } //finally {
+
+    //}
 });
 
 module.exports = router;
