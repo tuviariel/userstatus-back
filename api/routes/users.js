@@ -16,7 +16,7 @@ router.get("/", async (req, res, next) => {
     console.log(status);
     try { 
         
-        const response = await UserInfo.find(status).select("_id userName status ts").skip((page-1)*limit).limit(limit);
+        const response = await UserInfo.find(status).sort({ts:-1}).select("_id userName status ts").skip((page-1)*limit).limit(limit);
         if(response){
             const data = {
                 amount: response.length,
