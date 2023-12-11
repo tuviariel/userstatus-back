@@ -5,10 +5,10 @@ const mongoose = require("mongoose");
 
 router.post("/", async (req, res, next) => {
     try { 
-        const response = await UserInfo.findOne({ userName: req.body.userName } && { password: req.body.password }).exec();
+        const response = await UserInfo.findOne({ userName: req.body.userName, password: req.body.password }).exec();
         if(response){
-            req.session.user = {userName: req.body.userName};
-            req.session.save();
+            // req.session.user = {userName: req.body.userName};
+            // req.session.save();
             res.status(200).json({
                 message:"user found!",
                 user:response

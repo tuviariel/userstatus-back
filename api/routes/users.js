@@ -6,10 +6,17 @@ const mongoose = require("mongoose");
 router.get("/", async (req, res, next) => {
     const page = req.query.page || 1;
     const limit = req.query.limit || 50;
-    // console.log((page-1)*limit);
-    // console.log(limit);
+    const filter = req.query.status
+    const search = req.query.search // TODO- enable search..
+    let status;
+    if (filter) {
+        status = {status: filter}
+    }
+    console.log(filter);
+    console.log(status);
     try { 
-        const response = await UserInfo.find().select("_id userName status ts").skip((page-1)*limit).limit(limit);
+        
+        const response = await UserInfo.find(status).select("_id userName status ts").skip((page-1)*limit).limit(limit);
         if(response){
             const data = {
                 amount: response.length,

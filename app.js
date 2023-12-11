@@ -3,6 +3,9 @@ const session = require('express-session');
 const morgan = require("morgan");
 const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
+const cors = require("cors")
+// const http = require("http");
+
 // const UserInfo = require("./api/models/userInfo");
 
 const loginRoute = require("./api/routes/login");
@@ -75,6 +78,7 @@ app.use((req, res, next) => {
     }
     next();
 })
+// app.use(cors())
 // app.set('trust proxy', 1);
 
 //Redis Session initialization:
@@ -110,7 +114,6 @@ app.use((error, req, res, next) => {
     });
 })
 
-// const http = require("http");
 // // const app = require('./app');
 
 // const port = process.env.PORT || 5000;
